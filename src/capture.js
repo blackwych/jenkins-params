@@ -3,12 +3,17 @@
 // Licensed under the MIT License. See LICENSE file for full license information.
 //
 
-function detectKey(e) {
-  return e.previousElementSibling.textContent || e.querySelector('label').textContent;
+function detectKey(hiddenInput) {
+  return hiddenInput.value;
 }
 
-function detectValue(e) {
-  var input = e.querySelector('input:not([type="hidden"]),textarea,select');
+function detectValue(hiddenInput) {
+  var input = hiddenInput.nextElementSibling;
+
+  if (!input) {
+    return '(unknown)'
+  }
+
   switch (input.tagName.toLowerCase()) {
   case 'input':
     switch (input.type.toLowerCase()) {
@@ -27,13 +32,13 @@ function detectValue(e) {
 }
 
 function capture() {
-  var elements = document.querySelectorAll('.setting-main');
+  var elements = document.querySelectorAll('.setting-main input[type="hidden"]');
 
   if (elements.length == 0) {
     browser.runtime.sendMessage(null);
     return;
   }
-    
+
   var jobUrl = location.href.replace(/^(.*\/job\/[^\/]+).*$/, '$1');
   var jobName = jobUrl.split('/').slice(-1)[0];
 
