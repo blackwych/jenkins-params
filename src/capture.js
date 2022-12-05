@@ -3,12 +3,43 @@
 // Licensed under the MIT License. See LICENSE file for full license information.
 //
 
-function detectKey(hiddenInput) {
-  return hiddenInput.value;
+// [Note]
+//
+// There are two patterns of parameter field structure:
+//
+// ```
+// <div class="setting-name">...</div>
+// <div class="setting-main">
+//   ...
+//   <input ...>
+//   ...
+// </div>
+// ```
+//
+// and
+//
+// ```
+// <div class="setting-main">
+//  ...
+//  <input type="checkbox" ...>
+//  <label>...</label>
+// </div>
+// ```
+
+function getFirstText(e) {
+  return e && e.firstChild && e.firstChild.nodeName === '#text' ? e.firstChild.data : null;
 }
 
-function detectValue(hiddenInput) {
-  var input = hiddenInput.nextElementSibling;
+function detectKey(e) {
+  return (
+    getFirstText(e.parentElement.querySelector('.setting-name')) ||
+    getFirstText(e.querySelector('label')) ||
+    '(unknown)'
+  );
+}
+
+function detectValue(e) {
+  var input = e.querySelector('input:not([type="hidden"]),textarea,select');
 
   if (!input) {
     return '(unknown)'
@@ -32,7 +63,7 @@ function detectValue(hiddenInput) {
 }
 
 function capture() {
-  var elements = document.querySelectorAll('.setting-main input[type="hidden"]');
+  var elements = document.querySelectorAll('.setting-main');
 
   if (elements.length == 0) {
     browser.runtime.sendMessage(null);
