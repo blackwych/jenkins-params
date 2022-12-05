@@ -3,12 +3,48 @@
 // Licensed under the MIT License. See LICENSE file for full license information.
 //
 
+// [Note]
+//
+// There are two patterns of parameter field structure:
+//
+// ```
+// <div class="setting-name">...</div>
+// <div class="setting-main">
+//   ...
+//   <input ...>
+//   ...
+// </div>
+// ```
+//
+// and
+//
+// ```
+// <div class="setting-main">
+//  ...
+//  <input type="checkbox" ...>
+//  <label>...</label>
+// </div>
+// ```
+
+function getFirstText(e) {
+  return e && e.firstChild && e.firstChild.nodeName === '#text' ? e.firstChild.data : null;
+}
+
 function detectKey(e) {
-  return e.previousElementSibling.textContent || e.querySelector('label').textContent;
+  return (
+    getFirstText(e.parentElement.querySelector('.setting-name')) ||
+    getFirstText(e.querySelector('label')) ||
+    '(unknown)'
+  );
 }
 
 function detectValue(e) {
   var input = e.querySelector('input:not([type="hidden"]),textarea,select');
+
+  if (!input) {
+    return '(unknown)'
+  }
+
   switch (input.tagName.toLowerCase()) {
   case 'input':
     switch (input.type.toLowerCase()) {
@@ -33,7 +69,7 @@ function capture() {
     browser.runtime.sendMessage(null);
     return;
   }
-    
+
   var jobUrl = location.href.replace(/^(.*\/job\/[^\/]+).*$/, '$1');
   var jobName = jobUrl.split('/').slice(-1)[0];
 
