@@ -32,6 +32,7 @@ function getFirstText(e) {
 
 function detectKey(e) {
   return (
+    getFirstText(e.parentElement.querySelector('.jenkins-form-label')) ||
     getFirstText(e.parentElement.querySelector('.setting-name')) ||
     getFirstText(e.querySelector('label')) ||
     '(unknown)'
