@@ -1,119 +1,89 @@
-/*
- Copyright (c) 2017 Blackwych. All rights reserved.
- Licensed under the MIT License. See LICENSE file for full license information.
-*/
-
-@charset("utf-8");
-
-* {
+body {
+  background-color: floralwhite;
+  box-sizing: border-box;
+  color: black;
+  font-family: sans-serif;
+  font-size: 16px;
   margin: 0;
-  padding: 0;
+  padding: 0.5em;
 }
 
-body {
-  color: #333;
-  font-size: 13px;
-  line-height: 1.4em;
-  padding: 10px;
+button {
+  appearance: none;
+  background-color: dodgerblue;
+  border: none;
+  color: floralwhite;
+  cursor: pointer;
+  font-size: unset;
+  font-weight: bold;
+  padding: 0.5em 1em;
+}
+
+button:hover, button:active {
+  background-color: lightskyblue;
 }
 
 #toolbar {
-  margin-bottom: 5px;
+  margin-bottom: 1em;
 }
 
-a.button,
-a.button:hover,
-a.button:active {
-  background-color: #4b758b;
-  border: 1px solid #5788a1;
-  border-radius: 1px;
-  color: #eee;
+#copied {
+  color: dodgerblue;
+  display: none;
+  font-size: 0.9em;
+}
+
+#copied.visible {
+  display: inline;
+}
+
+#tabs {
+  display: flex;
+}
+
+.tab {
+  align-items: end;
+  appearance: none;
+  background-color: lightgray;
+  border-radius: 8px 8px 0 0;
+  color: floralwhite;
+  cursor: default;
   display: inline-block;
-  font-size: 12px;
-  font-weight: bold;
-  line-height: 2;
-  padding: 3px 20px;
-  text-align: center;
+  margin-right: 0.25em;
+  padding: 0.5em 1em;
   text-decoration: none;
-  vertical-align: middle;
-  width: 100px;
 }
 
-a.button:hover,
-a.button:active {
-  background-color: #3f6275;
-}
-
-#tab {
-  display: inline-block;
-  height: 33.2px;
-  list-style-type: none;
-  margin-top: 5px;
-}
-
-#tab:after {
-  clear: both;
-  content: ".";
-  display: block;
-  font-size: 0;
-  height: 0;
-  visibility: hidden;
-}
-
-#tab > li {
-  float: left;
-  margin-left: 3px;
-}
-
-#tab > li:first-child {
-  margin-left: 15px;
-}
-
-#tab > li > a,
-#tab > li > a:hover,
-#tab > li > a:active {
-  border: 1px solid #f0f0f0;
-  border-bottom: none;
-  border-radius: 5px 5px 0 0;
-  color: #999;
-  display: inline-block;
-  font-weight: normal;
-  padding: 7px 0;
-  text-align: center;
-  text-decoration: none;
-  vertical-align: middle;
-  width: 100px;
-}
-
-#tab > li > a:hover,
-#tab > li > a:active,
-#tab > li > a.selected {
-  background-color: #eee;
-  color: #000;
-}
-
-#tab > li > a.selected {
+.tab.selected {
+  background-color: mediumseagreen;
+  color: floralwhite;
   font-weight: bold;
 }
 
-#container {
-  height: 235px;
-  position: relative;
-  width: 380px;
+.tab:not(.selected):hover {
+  background-color: gainsboro;
+  cursor: pointer;
 }
 
-.result {
+#tab-contents {
+  background-color: white;
+  border: 1px solid lightgray;
+  border-radius: 0 8px 8px 8px;
+  height: 300px;
+  overflow: scroll;
+  padding: 0.5em;
+  width: 400px;
+}
+
+.tab-content {
   display: none;
   font-family: monospace;
-  height: 235px;
-  left: 0;
-  overflow: scroll;
-  padding: 10px;
-  position: absolute;
-  top: 0;
-  width: 380px;
+  font-size: 0.8em;
+  height: 100%;
+  white-space: pre;
+  width: 100%;
 }
 
-.result.selected {
+.tab-content.selected {
   display: block;
 }

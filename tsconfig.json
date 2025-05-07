@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "ESNext",
+    "strict": true,
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "lib": ["dom", "es2020"],
+    "types": ["chrome"],
+    "rootDir": "./src",
+    "outDir": "./build",
+    "allowJs": true
+  },
+  "include": [
+    "./**/*.ts"
+  ]
+}
