@@ -33,10 +33,10 @@
 
 const unknown = '(unknown)';
 
-function getJob(url: string): Job {
+function getJob(url: string): Job | undefined {
   const match = url.match(new RegExp('^.*/job/([^/]+)'));
   if (!match) {
-    return { jobName: unknown, jobUrl: unknown };
+    return undefined;
   }
 
   const [jobUrl, jobName] = match;
@@ -70,8 +70,11 @@ function getFieldValue(field: Element): string {
   return unknown;
 }
 
-function getBuild(): Build {
-  const { jobName, jobUrl } = getJob(location.href);
+function getBuild(): Build | undefined {
+  const job = getJob(location.href);
+  if (!job) {
+    return undefined;
+  }
 
   const fields = document.querySelectorAll('.setting-main');
 
@@ -83,13 +86,17 @@ function getBuild(): Build {
     params[name] = value;
   });
 
-  return { jobName, jobUrl, params };
+  return { ...job, params };
 }
 
 chrome.runtime.onMessage.addListener((message, _, sendResponse) => {
   switch (String(message)) {
     case 'GET_BUILD':
-      sendResponse(getBuild());
+      try {
+        sendResponse(getBuild());
+      } catch (e) {
+        alert(String(e));
+      }
       break;
     default:
       console.error('Unexpected message: ', message);
