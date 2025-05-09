@@ -5,6 +5,16 @@ const formatter: Record<string, Formatter> = {
   'build-params': formatForBuildParams,
 };
 
+async function fetchBuild(tabId: number): Promise<Build | undefined> {
+  try {
+    const build = await chrome.tabs.sendMessage(tabId, 'GET_BUILD');
+    return isBuild(build) ? build : undefined;
+  } catch (e) {
+    console.error(e);
+    return undefined
+  }
+}
+
 function isBuild(build: unknown): build is Build {
   return (
     typeof build === 'object' &&
@@ -37,6 +47,10 @@ function formatForSlack({ jobName, jobUrl, params }: Build): string {
 }
 
 function formatForBuildParams({ jobUrl, params }: Build): string {
+  if (jobUrl === '(unknown)') {
+    return '(unknown)';
+  }
+
   const url = new URL(`${jobUrl}/parambuild`);
 
   for (const [k, v] of Object.entries(params)) {
@@ -52,11 +66,7 @@ document.addEventListener('DOMContentLoaded', async (): Promise<void> => {
     return;
   }
 
-  const build = await chrome.tabs.sendMessage(tab.id, 'GET_BUILD');
-  if (!isBuild(build)) {
-    console.error('Unexpected response: ', build);
-    return;
-  }
+  const build = await fetchBuild(tab.id);
 
   const tabs = document.querySelectorAll<HTMLButtonElement>('.tab');
   const tabContents = document.querySelectorAll<HTMLDivElement>('.tab-content');
@@ -80,7 +90,7 @@ document.addEventListener('DOMContentLoaded', async (): Promise<void> => {
   });
 
   tabContents.forEach((tabContent) => {
-    tabContent.textContent = formatter[tabContent.id](build);
+    tabContent.textContent = isBuild(build) ? formatter[tabContent.id](build) : '(unknown)';
   });
 
   btnCopy.addEventListener('click', async () => {
