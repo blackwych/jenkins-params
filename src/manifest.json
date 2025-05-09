@@ -20,5 +20,10 @@
       "matches": ["<all_urls>"],
       "js": ["content.js"]
     }
-  ]
+  ],
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "{b1e766e1-2f9b-4d1e-919a-f2f588d32050}"
+    }
+  }
 }
