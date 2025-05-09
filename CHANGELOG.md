@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [2.0.0](https://github.com/blackwych/jenkins-params/releases/tag/v2.0.0) - 2025-05-09
+### Added
+* Renew all with new manifest (V3)
+
+
 ## [1.3.0](https://github.com/blackwych/jenkins-params/releases/tag/v1.3.0) - 2022-12-06
 ### Added
 * Support new DOM structure introduced in newer Jenkins
