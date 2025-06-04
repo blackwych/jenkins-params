@@ -1,6 +1,6 @@
 {
   "name": "jenkins-params",
-  "version": "2.0.1",
+  "version": "2.1.0",
   "private": true,
   "description": "Browser extension to make a summary of Jenkins job parameters for easy copy-and-paste",
   "main": "index.js",
