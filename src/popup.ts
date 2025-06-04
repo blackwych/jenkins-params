@@ -25,14 +25,27 @@ function isBuild(build: unknown): build is Build {
   );
 }
 
-function formatForSlack({ jobName, jobUrl, params }: Build): string {
+function getBuildParamUrl({ jobUrl, params }: Build): URL {
+  const url = new URL(`${jobUrl}/parambuild`);
+
+  for (const [k, v] of Object.entries(params)) {
+    url.searchParams.append(k, v);
+  }
+
+  return url;
+}
+
+function formatForSlack(build: Build): string {
+  const { jobName, jobUrl, params } = build;
+
   const lines = [
-    `*[${jobName}]*`,
-    `${jobUrl}`,
+    `*[${jobName}]* ([Job](${jobUrl})\\)`,
   ];
 
   if (Object.keys(params).length > 0) {
     lines.push(
+      '',
+      getBuildParamUrl(build).toString(),
       '```',
       ...Object.entries(params).map(([k, v]) => (
         v.includes('\n')
@@ -46,18 +59,14 @@ function formatForSlack({ jobName, jobUrl, params }: Build): string {
   return lines.join('\n');
 }
 
-function formatForBuildParams({ jobUrl, params }: Build): string {
+function formatForBuildParams(build: Build): string {
+  const { jobUrl, params } = build;
+
   if (jobUrl === '(unknown)') {
     return '(unknown)';
   }
 
-  const url = new URL(`${jobUrl}/parambuild`);
-
-  for (const [k, v] of Object.entries(params)) {
-    url.searchParams.append(k, v);
-  }
-
-  return url.toString();
+  return getBuildParamUrl(build).toString();
 }
 
 document.addEventListener('DOMContentLoaded', async (): Promise<void> => {
