@@ -52,7 +52,7 @@ function getFieldName(field: Element): string {
 }
 
 function getFieldValue(field: Element): string {
-  const input = field.querySelector('input:not([type="hidden"], textarea, select');
+  const input = field.querySelector('input:not([type="hidden"]), textarea, select');
 
   if (input instanceof HTMLInputElement) {
     switch (input.type.toLowerCase()) {
